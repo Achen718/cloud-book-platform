@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Typography, Input, Button } from '@material-tailwind/react';
-// import { EyeSlashIcon, EyeIcon } from '@heroicons/react/24/solid';
+import { signIn } from 'next-auth/react';
 
 export function LoginForm() {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -67,7 +67,15 @@ export function LoginForm() {
               //   }
             />
           </div>
-          <Button color='gray' size='lg' className='mt-6' fullWidth>
+          <Button
+            onClick={() =>
+              signIn('credentials', { redirectTo: '/book-editor' })
+            }
+            color='gray'
+            size='lg'
+            className='mt-6'
+            fullWidth
+          >
             sign in
           </Button>
           <div className='!mt-4 flex justify-end'>
@@ -86,12 +94,13 @@ export function LoginForm() {
             size='lg'
             className='mt-6 flex h-12 items-center justify-center gap-2'
             fullWidth
+            onClick={() => signIn('google', { redirectTo: '/book-editor' })}
           >
             <img
               src={`https://www.material-tailwind.com/logos/logo-google.png`}
               alt='google'
               className='h-6 w-6'
-            />{' '}
+            />
             sign in with google
           </Button>
           <Typography

@@ -182,7 +182,7 @@ export function NavbarDefault() {
           )}
         </IconButton>
       </div>
-      {/* <Collapse open={openNav}>
+      <Collapse open={openNav}>
         <div className='container mx-auto'>
           {navList}
           <div className='flex items-center gap-x-1'>
@@ -194,7 +194,7 @@ export function NavbarDefault() {
             </Button>
           </div>
         </div>
-      </Collapse> */}
+      </Collapse>
     </Navbar>
   );
 }
