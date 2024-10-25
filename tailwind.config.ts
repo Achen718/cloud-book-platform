@@ -13,6 +13,9 @@ const config: Config = withMT({
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      width: {
+        screen80: '80vw',
+      },
     },
   },
   plugins: [],

@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "id": "e005",
+      "email": "some@email.com",
+      "password": "$2a$10$7dG1paPC/U2hLmkMxJ0q4ugJZ3kZ/swfbLXXZ9sT9IIFcoINQYYLm",
+      "name": "somename",
+      "role": "Author"
+    },
+    {
+      "id": "d954",
+      "email": "user2@email.com",
+      "password": "$2a$10$tOYEO.AovWLcAq4vDv25w.8JW04W/kBs0auo.ObKHRnpX6D99YXqi",
+      "name": "user2",
+      "role": "Author"
+    }
+  ],
+  "books": [
+    {
+      "id": "1729865252987",
+      "title": "New Book",
+      "sections": [
+        {
+          "id": "1729865262111",
+          "title": "New Section1",
+          "subsections": [
+            {
+              "id": "1729865392857",
+              "title": "New Subsection2",
+              "subsections": []
+            }
+          ]
+        }
+      ],
+      "collaborators": [],
+      "authorId": "d954"
+    }
+  ]
+}

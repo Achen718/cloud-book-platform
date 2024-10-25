@@ -6,19 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "json-server": "json-server --watch server/db.json --port 3001"
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.10",
+    "bcrypt": "^5.1.1",
+    "json-server-auth": "^2.1.0",
     "next": "15.0.1",
     "next-auth": "^5.0.0-beta.25",
     "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021"
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "json-server": "^1.0.0-beta.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

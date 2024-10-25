@@ -1,11 +1,20 @@
+'use client';
 import { useState } from 'react';
-
 import { Typography, Input, Button } from '@material-tailwind/react';
 import { signIn } from 'next-auth/react';
 
 export function LoginForm() {
-  const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => setPasswordShown((cur) => !cur);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    await signIn('credentials', {
+      email,
+      password,
+      redirectTo: '/author/books',
+    });
+  };
 
   return (
     <section className='grid text-center h-screen items-center p-8'>
@@ -16,7 +25,11 @@ export function LoginForm() {
         <Typography className='mb-16 text-gray-600 font-normal text-[18px]'>
           Enter your email and password to sign in
         </Typography>
-        <form action='#' className='mx-auto max-w-[24rem] text-left'>
+        <form
+          action='#'
+          className='mx-auto max-w-[24rem] text-left'
+          onSubmit={handleLogin}
+        >
           <div className='mb-6'>
             <label htmlFor='email'>
               <Typography
@@ -27,16 +40,19 @@ export function LoginForm() {
               </Typography>
             </label>
             <Input
+              onChange={(e) => setEmail(e.target.value)}
               id='email'
               color='gray'
               size='lg'
               type='email'
               name='email'
+              value={email}
               placeholder='name@mail.com'
               className='w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200'
               labelProps={{
                 className: 'hidden',
               }}
+              {...{ required: true }}
             />
           </div>
           <div className='mb-6'>
@@ -49,28 +65,18 @@ export function LoginForm() {
               </Typography>
             </label>
             <Input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
               size='lg'
               placeholder='********'
               labelProps={{
                 className: 'hidden',
               }}
               className='w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200'
-              type={passwordShown ? 'text' : 'password'}
-              //   icon={
-              //     <i onClick={togglePasswordVisiblity}>
-              //       {passwordShown ? (
-              //         <EyeIcon className="h-5 w-5" />
-              //       ) : (
-              //         <EyeSlashIcon className="h-5 w-5" />
-              //       )}
-              //     </i>
-              //   }
             />
           </div>
           <Button
-            onClick={() =>
-              signIn('credentials', { redirectTo: '/book-editor' })
-            }
+            type='submit'
             color='gray'
             size='lg'
             className='mt-6'
@@ -94,7 +100,6 @@ export function LoginForm() {
             size='lg'
             className='mt-6 flex h-12 items-center justify-center gap-2'
             fullWidth
-            onClick={() => signIn('google', { redirectTo: '/book-editor' })}
           >
             <img
               src={`https://www.material-tailwind.com/logos/logo-google.png`}

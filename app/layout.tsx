@@ -1,3 +1,4 @@
+import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 
@@ -12,8 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body>{children}</body>
-    </html>
+    <SessionProvider>
+      <html lang='en'>
+        <body>{children}</body>
+      </html>
+    </SessionProvider>
   );
 }
