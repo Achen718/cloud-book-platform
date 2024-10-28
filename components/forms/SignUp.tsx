@@ -1,56 +1,45 @@
+// components/forms/SignUp.tsx
 'use client';
-import { useState } from 'react';
-import { Card, Input, Button, Typography } from '@material-tailwind/react';
-import bcrypt from 'bcryptjs';
+import { ChangeEvent, useReducer } from 'react';
+import { Card, Button, Typography, Checkbox } from '@material-tailwind/react';
 import { useRouter } from 'next/navigation';
 
+import FormInput from '@/components/forms/FormInput';
+import { handleSignUp } from '@/utils/auth/handleSignUp';
+import {
+  initialState,
+  signUpReducer,
+} from '@/components/forms/reducers/signUpReducer';
+
 export function SignUpForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [state, dispatch] = useReducer(signUpReducer, initialState);
+  const { email, password, name, emailError, passwordError } = state;
   const router = useRouter();
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSignUp({
+      email,
+      password,
+      name,
+      setEmailError: (error: string) =>
+        dispatch({ type: 'SET_EMAIL_ERROR', payload: error }),
+      setPasswordError: (error: string) =>
+        dispatch({ type: 'SET_PASSWORD_ERROR', payload: error }),
+      router,
+    });
   };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    let valid = true;
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'SET_NAME', payload: e.target.value });
+  };
 
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email address');
-      valid = false;
-    } else {
-      setEmailError('');
-    }
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'SET_EMAIL', payload: e.target.value });
+  };
 
-    if (password.length < 6) {
-      setPasswordError('Password must be at least 6 characters');
-      valid = false;
-    } else {
-      setPasswordError('');
-    }
-
-    if (valid) {
-      const hashedPassword = bcrypt.hashSync(password, 10);
-      await fetch('http://localhost:3001/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password: hashedPassword,
-          name,
-          role: 'Author',
-        }),
-      });
-      router.push('/login');
-    }
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'SET_PASSWORD', payload: e.target.value });
   };
 
   return (
@@ -63,67 +52,60 @@ export function SignUpForm() {
       </Typography>
       <form
         className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
-        onSubmit={handleSignUp}
+        onSubmit={onSubmit}
       >
         <div className='mb-1 flex flex-col gap-6'>
-          <Typography variant='h6' color='blue-gray' className='-mb-3'>
-            Your Name
-          </Typography>
-          <Input
-            size='lg'
-            placeholder='Your Name'
-            className=' !border-t-blue-gray-200 focus:!border-t-gray-900'
-            labelProps={{
-              className: 'before:content-none after:content-none',
-            }}
+          <FormInput
+            label='Your Name'
+            type='text'
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+            onChange={handleNameChange}
           />
-          <Typography variant='h6' color='blue-gray' className='-mb-3'>
-            Email
-          </Typography>
-          <Input
-            size='lg'
-            placeholder='name@mail.com'
-            className=' !border-t-blue-gray-200 focus:!border-t-gray-900'
-            labelProps={{
-              className: 'before:content-none after:content-none',
-            }}
+          <FormInput
+            label='Email'
+            type='email'
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            onChange={handleEmailChange}
+            error={emailError}
           />
-          {emailError && (
-            <Typography variant='small' color='red' className='mt-1'>
-              {emailError}
-            </Typography>
-          )}
-          <Typography variant='h6' color='blue-gray' className='-mb-3'>
-            Password
-          </Typography>
-          <Input
-            size='lg'
+          <FormInput
+            label='Password'
             type='password'
-            placeholder='Password'
-            className=' !border-t-blue-gray-200 focus:!border-t-gray-900'
-            labelProps={{
-              className: 'before:content-none after:content-none',
-            }}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            onChange={handlePasswordChange}
+            error={passwordError}
           />
-          {passwordError && (
-            <Typography variant='small' color='red' className='mt-1'>
-              {passwordError}
-            </Typography>
-          )}
         </div>
-        <Button type='submit' className='mt-6' fullWidth>
+        <Checkbox
+          label={
+            <Typography
+              variant='small'
+              color='gray'
+              className='flex items-center font-normal'
+            >
+              I agree the
+              <a
+                href='#'
+                className='font-medium transition-colors hover:text-gray-900'
+              >
+                &nbsp;Terms and Conditions
+              </a>
+            </Typography>
+          }
+          containerProps={{ className: '-ml-2.5' }}
+        />
+        <Button type='submit' color='gray' size='lg' className='mt-6' fullWidth>
           Sign Up
         </Button>
+        <Typography color='gray' className='mt-4 text-center font-normal'>
+          Already have an account?{' '}
+          <a href='#' className='font-medium text-gray-900'>
+            Sign In
+          </a>
+        </Typography>
       </form>
     </Card>
   );
 }
+
+export default SignUpForm;

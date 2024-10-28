@@ -33,7 +33,7 @@
           "subsections": [
             {
               "id": "1729865392857",
-              "title": "New Subsection2",
+              "title": "New Subsection11",
               "subsections": []
             }
           ]
@@ -44,10 +44,13 @@
     },
     {
       "id": "1730140888312",
-      "title": "New Book",
-      "authorId": "d954",
-      "collaborators": ["e005", "c21a"],
-      "sections": []
+      "title": "New Book1",
+      "sections": [],
+      "collaborators": [
+        "e005",
+        "c21a"
+      ],
+      "authorId": "d954"
     }
   ]
 }
