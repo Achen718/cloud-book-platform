@@ -117,7 +117,7 @@ export const BookProvider: React.FC<BookProviderProps> = ({
       setCollaborators(updatedCollaborators);
 
       await fetch(`http://localhost:3001/books/${bookId}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },

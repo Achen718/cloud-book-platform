@@ -43,11 +43,11 @@
       "authorId": "d954"
     },
     {
-      "collaborators": [
-        "d954",
-        "c21a"
-      ],
-      "id": "1730139270225"
+      "id": "1730140888312",
+      "title": "New Book",
+      "authorId": "d954",
+      "collaborators": ["e005", "c21a"],
+      "sections": []
     }
   ]
 }
