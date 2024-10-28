@@ -19,6 +19,7 @@ const BooksList = () => {
     id: string;
     title: string;
     authorId: string;
+    collaborators: string[];
     sections: any[];
   }
 
@@ -30,7 +31,9 @@ const BooksList = () => {
       const response = await fetch('http://localhost:3001/books');
       const data = await response.json();
       const filteredBooks = data.filter(
-        (book: Book) => book.authorId === currentUser?.id
+        (book: Book) =>
+          book.authorId === currentUser?.id ||
+          book.collaborators.includes(currentUser?.id ?? '')
       );
       setBooks(filteredBooks);
     };
@@ -44,7 +47,7 @@ const BooksList = () => {
     const newBook = {
       id: Date.now().toString(),
       title: 'New Book',
-      authorId: currentUser?.id || '',
+      authorId: currentUser?.id ?? '',
       collaborators: [],
       sections: [],
     };
@@ -69,9 +72,8 @@ const BooksList = () => {
       </Typography>
       <List>
         {books.map((book) => (
-          <ListItem key={book.id} onClick={() => handleEditBook(book.id)}>
+          <ListItem key={book.id} onClick={handleEditBook.bind(null, book.id)}>
             {book.title}
-            {/* <Button onClick={() => handleEditBook(book.id)}>Edit</Button> */}
           </ListItem>
         ))}
       </List>

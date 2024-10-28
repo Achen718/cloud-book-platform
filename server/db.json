@@ -13,6 +13,13 @@
       "password": "$2a$10$tOYEO.AovWLcAq4vDv25w.8JW04W/kBs0auo.ObKHRnpX6D99YXqi",
       "name": "user2",
       "role": "Author"
+    },
+    {
+      "id": "c21a",
+      "email": "user3@email.com",
+      "password": "$2a$10$5CWiZ693U.aXNc4oy2NqLODkky85Tzir.w39CIh/3Mv.kC6gowfDC",
+      "name": "user3",
+      "role": "Author"
     }
   ],
   "books": [
@@ -36,13 +43,11 @@
       "authorId": "d954"
     },
     {
-      "id": "1730139270225",
-      "title": "New Book1",
-      "sections": [],
       "collaborators": [
-        "d954"
+        "d954",
+        "c21a"
       ],
-      "authorId": "e005"
+      "id": "1730139270225"
     }
   ]
 }

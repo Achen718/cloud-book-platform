@@ -35,19 +35,22 @@ export const BookProvider: React.FC<BookProviderProps> = ({
   bookId,
 }) => {
   const [sections, setSections] = useState<Section[]>([]);
+  const [collaborators, setCollaborators] = useState<string[]>([]);
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8080');
-    ws.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.bookId === bookId) {
+    const fetchBook = async () => {
+      const response = await fetch(`http://localhost:3001/books/${bookId}`);
+      if (response.ok) {
+        const data = await response.json();
         setSections(data.sections);
+        setCollaborators(data.collaborators);
+      } else {
+        console.error('Failed to fetch book data');
       }
     };
-    return () => {
-      ws.current?.close();
-    };
+
+    fetchBook();
   }, [bookId]);
 
   const sendUpdate = (updatedSections: Section[]) => {
@@ -109,13 +112,20 @@ export const BookProvider: React.FC<BookProviderProps> = ({
   };
 
   const addCollaborator = async (collaboratorId: string) => {
-    await fetch(`http://localhost:3001/books/${bookId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ collaborators: [collaboratorId] }),
-    });
+    try {
+      const updatedCollaborators = [...collaborators, collaboratorId];
+      setCollaborators(updatedCollaborators);
+
+      await fetch(`http://localhost:3001/books/${bookId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ collaborators: updatedCollaborators }),
+      });
+    } catch (error) {
+      console.error('Failed to add collaborator:', error);
+    }
   };
 
   return (
