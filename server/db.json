@@ -34,6 +34,15 @@
       ],
       "collaborators": [],
       "authorId": "d954"
+    },
+    {
+      "id": "1730139270225",
+      "title": "New Book1",
+      "sections": [],
+      "collaborators": [
+        "d954"
+      ],
+      "authorId": "e005"
     }
   ]
 }

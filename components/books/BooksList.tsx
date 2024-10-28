@@ -18,6 +18,7 @@ const BooksList = () => {
   interface Book {
     id: string;
     title: string;
+    authorId: string;
     sections: any[];
   }
 
@@ -28,16 +29,22 @@ const BooksList = () => {
     const fetchBooks = async () => {
       const response = await fetch('http://localhost:3001/books');
       const data = await response.json();
-      setBooks(data);
+      const filteredBooks = data.filter(
+        (book: Book) => book.authorId === currentUser?.id
+      );
+      setBooks(filteredBooks);
     };
-    fetchBooks();
-  }, []);
+
+    if (currentUser) {
+      fetchBooks();
+    }
+  }, [currentUser]);
 
   const handleCreateBook = async () => {
     const newBook = {
       id: Date.now().toString(),
       title: 'New Book',
-      authorId: currentUser?.id,
+      authorId: currentUser?.id || '',
       collaborators: [],
       sections: [],
     };
@@ -60,24 +67,15 @@ const BooksList = () => {
       <Typography variant='h4' color='blue-gray' className='mb-4'>
         My Books
       </Typography>
-      <Button onClick={handleCreateBook} className='mb-4'>
-        Create Book
-      </Button>
-      {books.length > 0 ? (
-        <List>
-          {books.map((book) => (
-            <ListItem key={book.id} onClick={() => handleEditBook(book.id)}>
-              <Typography variant='h6' color='blue-gray'>
-                {book.title}
-              </Typography>
-            </ListItem>
-          ))}
-        </List>
-      ) : (
-        <Typography variant='h6' color='gray'>
-          No books available.
-        </Typography>
-      )}
+      <List>
+        {books.map((book) => (
+          <ListItem key={book.id} onClick={() => handleEditBook(book.id)}>
+            {book.title}
+            {/* <Button onClick={() => handleEditBook(book.id)}>Edit</Button> */}
+          </ListItem>
+        ))}
+      </List>
+      <Button onClick={handleCreateBook}>Create New Book</Button>
     </Card>
   );
 };

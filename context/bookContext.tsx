@@ -109,12 +109,12 @@ export const BookProvider: React.FC<BookProviderProps> = ({
   };
 
   const addCollaborator = async (collaboratorId: string) => {
-    await fetch(`http://localhost:3001/books/${bookId}/collaborators`, {
+    await fetch(`http://localhost:3001/books/${bookId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ collaboratorId }),
+      body: JSON.stringify({ collaborators: [collaboratorId] }),
     });
   };
 

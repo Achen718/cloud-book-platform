@@ -24,22 +24,25 @@ server.put('/books/:id', (req, res) => {
   }
 });
 
-// Custom route for adding a collaborator
-server.patch('/books/:id/collaborators', (req, res) => {
+// Custom route for setting a collaborator role
+server.patch('/users/:id', (req, res) => {
+  console.log(`Received request to set role for user ${req.params.id}`);
   const db = router.db; // lowdb instance
-  const bookId = req.params.id;
-  const { collaboratorId } = req.body;
+  const userId = req.params.id;
+  const { role, bookId } = req.body;
 
-  const book = db.get('books').find({ id: bookId }).value();
-  if (book) {
-    if (!book.collaborators) {
-      book.collaborators = [];
+  const user = db.get('users').find({ id: userId }).value();
+  if (user) {
+    console.log(`User found: ${JSON.stringify(user)}`);
+    if (!user.role[role]) {
+      user.role[role] = [];
     }
-    book.collaborators.push(collaboratorId);
-    db.write();
-    res.json(book);
+    user.role[role].push(bookId);
+    db.get('users').find({ id: userId }).assign({ role: user.role }).write();
+    res.json(user);
   } else {
-    res.status(404).json({ message: 'Book not found' });
+    console.log(`User not found: ${userId}`);
+    res.status(404).json({ message: 'User not found' });
   }
 });
 

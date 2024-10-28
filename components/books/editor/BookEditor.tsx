@@ -86,7 +86,6 @@ const BookEditor = ({ bookId }: BookEditorProps) => {
     // Fetch the current book data to include collaborators and authorId
     const response = await fetch(`http://localhost:3001/books/${bookId}`);
     const currentBookData = await response.json();
-
     const bookData = {
       id: bookId,
       title,

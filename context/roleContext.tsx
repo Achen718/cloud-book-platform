@@ -23,7 +23,6 @@ const RoleContext = createContext<RoleContextProps | undefined>(undefined);
 
 export const RoleProvider = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
-  console.log(session);
   const [role, setRole] = useState<Role>('Collaborator');
 
   useEffect(() => {
